@@ -3,9 +3,13 @@ from tkinter import *
 from tkinter import messagebox
 
 import pyperclip
+import json
 
-BACKGROUND = "#c9c9c9"
+BACKGROUND = "#204985"
+FOREGROUND = "#ffffff"
+FONT_LOOK = "Rubik", 12, "bold"
 EMAIL = "skaftisveins@gmail.com"
+
 
 # ---------------------------- PASSWORD GENERATOR ------------------------------- #
 
@@ -28,10 +32,10 @@ def generate_password():
 
     password = "".join(password_list)
     password_entry.insert(0, password)
+
     # Put password into the clipboard, ready for copy and paste
     pyperclip.copy(password)
 
-    # print(f"Your password is: {password}")
 # ---------------------------- SAVE PASSWORD ------------------------------- #
 
 
@@ -39,6 +43,18 @@ def save():  # Function to save password
     website = website_entry.get()
     email = email_entry.get()
     password = password_entry.get()
+
+    new_data = {
+        website: {
+            "email": email,
+            "password": password
+        }
+    }
+
+    def write_or_update_json_file(mode):
+        """Simple function to write or update existing data"""
+        with open("data.json", "w") as data_file:
+            json.dump(mode, data_file, indent=4)
 
     if len(website) == 0 or len(password) == 0:
         messagebox.showwarning(
@@ -49,16 +65,29 @@ def save():  # Function to save password
         title=website, message=f"These are the details entered: \nEmail: {email} \nPassword: {password} \nIs it ok to save?")
 
     if is_ok:
-        print(f"Saving password for: {website}")
-        with open("data.txt", "a") as file:
-            file.write(f"{website} | {email} | {password}\n")
+        try:
+            with open("data.json", "r") as data_file:
+                print(f"Saving password for: {website}")
+                existing_data = json.load(data_file)  # Reading existing_data
 
+        except FileNotFoundError as error_message:
+            print(
+                f"File Not Found...{error_message},\nCreating new data.json file...")
+            write_or_update_json_file(new_data)
+
+        else:
+            # Updating existing_data with new_data
+            existing_data.update(new_data)
+            write_or_update_json_file(existing_data)
+
+        finally:
             # Clear all fields in entry inputs after Add button is pressed
             website_entry.delete(0, END)
-            # email_entry.delete(0, END)
             password_entry.delete(0, END)
     else:
         is_ok = False
+
+
 # ---------------------------- UI SETUP ------------------------------- #
 
 
@@ -74,11 +103,14 @@ canvas.create_image(130, 100, image=lock_img)
 canvas.grid(column=1, row=0)
 
 # Labels
-website_label = Label(text="Website: ", background=BACKGROUND)
+website_label = Label(text="Website: ", background=BACKGROUND,
+                      foreground=FOREGROUND, font=(FONT_LOOK))
 website_label.grid(column=0, row=1)
-username_label = Label(text="Email: ", background=BACKGROUND)
+username_label = Label(text="Email: ", background=BACKGROUND,
+                       foreground=FOREGROUND, font=(FONT_LOOK))
 username_label.grid(column=0, row=2)
-password_label = Label(text="Password: ", background=BACKGROUND)
+password_label = Label(text="Password: ", background=BACKGROUND,
+                       foreground=FOREGROUND, font=(FONT_LOOK))
 password_label.grid(column=0, row=3)
 
 # Entries
