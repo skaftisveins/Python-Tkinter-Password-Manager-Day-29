@@ -2,6 +2,7 @@
 ## Useful Password Manager Program.
 
 ![grab-landing-page](https://github.com/skaftisveins/Python-Tkinter-Password-Manager-Day-29/blob/master/demo.gif)
+![ScreenShot](https://github.com/skaftisveins/Python-Tkinter-Password-Manager-Day-29/blob/master/screenshot.png)
 
 ### Functions and what they do
 Couple of entries with save and generate password methods. 
