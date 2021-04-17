@@ -13,7 +13,6 @@ EMAIL = "skaftisveins@gmail.com"
 
 # ---------------------------- PASSWORD GENERATOR ------------------------------- #
 
-
 def generate_password():
     password_entry.delete(0, END)
     # Password Generator Project
@@ -69,6 +68,16 @@ def save():  # Function to save password
             with open("data.json", "r") as data_file:
                 print(f"Saving password for: {website}")
                 existing_data = json.load(data_file)  # Reading existing_data
+                if website in existing_data:
+                    update = messagebox.askyesno("Warning", f"There is already a password saved for {website}.\n"
+                                                 f"Would you like to overwrite?")
+                    if update:
+                        existing_data[website]["password"] = password
+                        existing_data[website]["email"] = email
+                    else:
+                        return
+                else:
+                    existing_data.update(new_data)
 
         except FileNotFoundError as error_message:
             print(
@@ -87,9 +96,28 @@ def save():  # Function to save password
     else:
         is_ok = False
 
+# ---------------------------- FIND PASSWORD ------------------------- #
+
+
+def find_password():
+    website = website_entry.get()
+    try:
+        with open("data.json", "r") as data_file:
+            existing_data = json.load(data_file)
+    except FileNotFoundError:
+        messagebox.showinfo(title="Error", message="No Data File Found")
+    else:
+        if website in existing_data:
+            email = existing_data[website]["email"]
+            password = existing_data[website]["password"]
+            messagebox.showinfo(
+                title=website, message=f"Email: {email}\nPassword: {password}")
+        else:
+            messagebox.showinfo(
+                title="Error", message="No details for the website exists")
+
 
 # ---------------------------- UI SETUP ------------------------------- #
-
 
 window = Tk()
 window.title("Password Manager")
@@ -124,6 +152,8 @@ password_entry = Entry(width=21)
 password_entry.grid(column=1, row=3, sticky="EW")
 
 # Buttons
+search_website = Button(text="Search", command=find_password)
+search_website.grid(column=2, row=1, sticky="EW")
 gen_password = Button(text="Generate Password", command=generate_password)
 gen_password.grid(column=2, row=3)
 add_password = Button(text="Add", width=36, command=save)
