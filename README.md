@@ -12,7 +12,7 @@ Generate password takes random number of picks from a list of letters, numbers a
 
 ### save():
 Save method writes your info to a data.json if no entry fields are empty.
-Added check if website already exists in database, popupbox will give warnning with a Yes or No options to ovwerwrite.
+Added check if website already exists in database, popupbox will give warning with a Yes or No options to overwrite.
 Then it clears the entry fields, if saved successfull!
 Wrapped it in a try catch block with except FileNotFoundError, else and finally
 
