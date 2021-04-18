@@ -1,5 +1,6 @@
 # Python-Tkinter-Password-Manager-Day-29
-## What I learned: Python refactoring imports, tkinter messagebox, pyperclip and using json in Python. Had a lot of fun with this one and been adding couple of features since first version.
+## What I learned: 
+Python refactoring imports, tkinter messagebox, pyperclip and using json in Python. Had a lot of fun with this one and been adding couple of features since first version.
 
 ![grab-landing-page](https://github.com/skaftisveins/Python-Tkinter-Password-Manager-Day-29/blob/master/demo.gif)
 ![ScreenShot](https://github.com/skaftisveins/Python-Tkinter-Password-Manager-Day-29/blob/master/screenshot.png)
